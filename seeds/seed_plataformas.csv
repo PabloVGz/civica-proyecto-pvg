@@ -1,0 +1,32 @@
+platform_code,platform_name,manufacturer,platform_type
+PS4,PlayStation 4,Sony,Sobremesa
+PS3,PlayStation 3,Sony,Sobremesa
+PS2,PlayStation 2,Sony,Sobremesa
+PS,PlayStation,Sony,Sobremesa
+PSP,PlayStation Portable,Sony,Portátil
+PSV,PlayStation Vita,Sony,Portátil
+XOne,Xbox One,Microsoft,Sobremesa
+X360,Xbox 360,Microsoft,Sobremesa
+XB,Xbox,Microsoft,Sobremesa
+Wii,Wii,Nintendo,Sobremesa
+WiiU,Wii U,Nintendo,Sobremesa
+DS,Nintendo DS,Nintendo,Portátil
+3DS,Nintendo 3DS,Nintendo,Portátil
+GBA,Game Boy Advance,Nintendo,Portátil
+GB,Game Boy,Nintendo,Portátil
+GC,GameCube,Nintendo,Sobremesa
+N64,Nintendo 64,Nintendo,Sobremesa
+SNES,Super Nintendo Entertainment System,Nintendo,Sobremesa
+NES,Nintendo Entertainment System,Nintendo,Sobremesa
+PC,PC,PC,PC
+2600,Atari 2600,Atari,Sobremesa
+DC,Dreamcast,Sega,Sobremesa
+SAT,Sega Saturn,Sega,Sobremesa
+GEN,Sega Genesis / Mega Drive,Sega,Sobremesa
+SCD,Sega CD,Sega,Sobremesa
+GG,Game Gear,Sega,Portátil
+WS,WonderSwan,Bandai,Portátil
+NG,Neo Geo,SNK,Sobremesa
+TG16,TurboGrafx-16,NEC,Sobremesa
+3DO,3DO Interactive Multiplayer,Panasonic,Sobremesa
+PCFX,PC-FX,NEC,Sobremesa
