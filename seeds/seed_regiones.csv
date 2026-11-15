@@ -1,5 +1,5 @@
-region_code,region_name,region_name_es
-NA,North America,Norteamérica
-EU,Europe,Europa
-JP,Japan,Japón
-OTHER,Rest of World,Resto del mundo
+region_code,region_name
+NA,North America
+EU,Europe
+JP,Japan
+OTHER,Rest of World

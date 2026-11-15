@@ -7,7 +7,6 @@ seeds:
       column_types:
         region_code: varchar
         region_name: varchar
-        region_name_es: varchar
     columns:
       - name: region_code
         description: "Código corto de la región (NA, EU, JP, OTHER)."
@@ -15,9 +14,7 @@ seeds:
           - unique
           - not_null
       - name: region_name
-        description: "Nombre de la región en inglés."
-      - name: region_name_es
-        description: "Nombre de la región en español."
+        description: "Nombre completo de la región." 
 
   - name: seed_plataformas
     description: "Catálogo maestro de plataformas de videojuegos, fabricante y formato."

@@ -20,3 +20,17 @@ models:
   civica_proyecto_pvg:
     staging:
       +materialized: view
+      raw_videojuegos:
+        +schema: raw_videojuegos
+    silver:
+      +materialized: table
+      videojuegos:
+        +schema: silver_videojuegos
+    gold:
+      +database: gold_db
+      intermediate:
+        +materialized: ephemeral
+        +schema: intermediate
+      core:
+        +materialized: table
+        +schema: core

@@ -1,0 +1,143 @@
+version: 2
+
+models:
+  - name: slv_videojuegos__macrogeneros
+    columns:
+      - name: macrogenre_id
+        data_tests: [unique, not_null]
+
+  - name: slv_videojuegos__generos
+    columns:
+      - name: genre_id
+        data_tests: [unique, not_null]
+      - name: macrogenre_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('slv_videojuegos__macrogeneros')
+                field: macrogenre_id
+
+  - name: slv_videojuegos__publishers
+    columns:
+      - name: publisher_id
+        data_tests: [unique, not_null]
+
+  - name: slv_videojuegos__developers
+    columns:
+      - name: developer_id
+        data_tests: [unique, not_null]
+
+  - name: slv_videojuegos__ratings
+    columns:
+      - name: rating_id
+        data_tests: [unique, not_null]
+
+  - name: slv_videojuegos__plataformas
+    columns:
+      - name: platform_id
+        data_tests: [unique, not_null]
+
+  - name: slv_videojuegos__regiones
+    columns:
+      - name: region_id
+        data_tests: [unique, not_null]
+
+  - name: slv_videojuegos__videojuegos
+    columns:
+      - name: game_id
+        data_tests: [unique, not_null]
+      - name: genre_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('slv_videojuegos__generos')
+                field: genre_id
+      - name: developer_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('slv_videojuegos__developers')
+                field: developer_id
+      - name: rating_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('slv_videojuegos__ratings')
+                field: rating_id
+
+  - name: slv_videojuegos__ediciones
+    columns:
+      - name: edicion_id
+        data_tests: [unique, not_null]
+      - name: game_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('slv_videojuegos__videojuegos')
+                field: game_id
+      - name: platform_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('slv_videojuegos__plataformas')
+                field: platform_id
+      - name: publisher_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('slv_videojuegos__publishers')
+                field: publisher_id
+
+  - name: slv_videojuegos__ventas_regionales
+    columns:
+      - name: sale_id
+        data_tests: [unique, not_null]
+      - name: edicion_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('slv_videojuegos__ediciones')
+                field: edicion_id
+      - name: region_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('slv_videojuegos__regiones')
+                field: region_id
+      - name: source_code
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['VGS_2016', 'PS4', 'XBOX']
+
+  - name: slv_videojuegos__puntuaciones_critica
+    columns:
+      - name: edicion_id
+        data_tests:
+          - unique
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('slv_videojuegos__ediciones')
+                field: edicion_id
+
+  - name: slv_videojuegos__puntuaciones_usuarios
+    columns:
+      - name: edicion_id
+        data_tests:
+          - unique
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('slv_videojuegos__ediciones')
+                field: edicion_id
