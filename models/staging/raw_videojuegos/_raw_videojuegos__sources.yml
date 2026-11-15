@@ -2,8 +2,13 @@ version: 2
 
 sources:
   - name: raw_videojuegos
-    database: DEV_BRONZE_DB
+    database: "{{ env_var('DBT_BRONZE_DATABASE', 'DEV_BRONZE_DB') }}"
     schema: raw_videojuegos
+    config:
+      loaded_at_field: _loaded_at
+      freshness:
+        warn_after: {count: 24, period: hour}
+        error_after: {count: 48, period: hour}
     tables:
       - name: raw_vgs_2016
         description: "Histórico global de ventas y puntuaciones de videojuegos hasta diciembre de 2016."
