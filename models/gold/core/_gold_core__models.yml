@@ -1,0 +1,55 @@
+version: 2
+
+models:
+  - name: dim_videojuegos
+    columns:
+      - name: game_id
+        data_tests: [unique, not_null]
+
+  - name: dim_plataformas
+    columns:
+      - name: platform_id
+        data_tests: [unique, not_null]
+
+  - name: dim_publishers
+    columns:
+      - name: publisher_id
+        data_tests: [unique, not_null]
+
+  - name: dim_regiones
+    columns:
+      - name: region_id
+        data_tests: [unique, not_null]
+
+  - name: fct_ventas
+    columns:
+      - name: sale_id
+        data_tests: [unique, not_null]
+      - name: game_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_videojuegos')
+                field: game_id
+      - name: platform_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_plataformas')
+                field: platform_id
+      - name: publisher_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_publishers')
+                field: publisher_id
+      - name: region_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_regiones')
+                field: region_id
