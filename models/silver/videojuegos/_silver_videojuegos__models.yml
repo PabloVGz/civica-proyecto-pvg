@@ -170,3 +170,32 @@ models:
         data_tests:
           - not_null
           - not_future_timestamp
+
+
+unit_tests:
+  - name: test_slv_ediciones_deduplica_y_combina_fuentes #Se verifica que se fusionan las fuentes bien, en este caso en VGS no tiene fecha de salida y en PS4 sí (Xbox se mete vacio para que no falle)
+    model: slv_videojuegos__ediciones
+    given:
+      - input: ref('stg_raw_videojuegos__vgs_2016')
+        rows:
+          - {game_name: 'The Witcher 3', platform: 'PS4', publisher: 'Namco', developer: 'CD Projekt', rating: 'M', release_year: null, critic_score: 92, critic_count: 79, user_score: 9.2, user_count: 1000}
+      - input: ref('stg_raw_videojuegos__ps4')
+        rows:
+          - {game_name: 'The Witcher 3', platform: 'PS4', publisher: 'Namco', release_year: 2015}
+      - input: ref('stg_raw_videojuegos__xbox')
+        rows: []
+    expect:
+      rows:
+        - {release_year: 2015, critic_score: 92, user_score: 9.2}
+
+  - name: test_slv_ratings_mapea_descripciones #Se comprueba que al meter dos ratings se le de bien el codigo y la descripción
+    model: slv_videojuegos__ratings
+    given:
+      - input: ref('stg_raw_videojuegos__vgs_2016')
+        rows:
+          - {rating: 'M'}
+          - {rating: null}
+    expect:
+      rows:
+        - {rating_code: 'M', rating_description: 'Mature (Ages 17 and Older)'}
+        - {rating_code: 'Unrated', rating_description: 'Unrated / Not Specified'}
