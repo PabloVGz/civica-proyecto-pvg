@@ -24,7 +24,11 @@ models:
   - name: fct_ventas
     columns:
       - name: sale_id
-        data_tests: [unique, not_null]
+        data_tests:
+          - unique:
+              config:
+                store_failures: true
+          - not_null
       - name: game_id
         data_tests:
           - not_null
@@ -32,6 +36,8 @@ models:
               arguments:
                 to: ref('dim_videojuegos')
                 field: game_id
+              config:
+                store_failures: true
       - name: platform_id
         data_tests:
           - not_null
@@ -39,6 +45,8 @@ models:
               arguments:
                 to: ref('dim_plataformas')
                 field: platform_id
+              config:
+                store_failures: true
       - name: publisher_id
         data_tests:
           - not_null
@@ -46,6 +54,8 @@ models:
               arguments:
                 to: ref('dim_publishers')
                 field: publisher_id
+              config:
+                store_failures: true
       - name: region_id
         data_tests:
           - not_null
@@ -53,3 +63,5 @@ models:
               arguments:
                 to: ref('dim_regiones')
                 field: region_id
+              config:
+                store_failures: true
