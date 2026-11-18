@@ -2,34 +2,67 @@ version: 2
 
 models:
   - name: dim_videojuegos
+    description: Dimensión de videojuegos con su género y macrogénero.
     columns:
       - name: game_id
+        description: Clave del videojuego.
         data_tests: [unique, not_null]
+      - name: game_name
+        description: Título comercial del videojuego.
+      - name: genre_name
+        description: Género principal del videojuego.
+      - name: macrogenre_name
+        description: Agrupación del género en macrogenero.
 
   - name: dim_plataformas
+    description: Dimensión de consolas y sistemas de juego con fabricante y tipo de hardware.
     columns:
       - name: platform_id
+        description: Clave de la plataforma.
         data_tests: [unique, not_null]
+      - name: platform_code
+        description: Código abreviado de la plataforma (ej. PS4, XOne, PC, Wii).
+      - name: platform_name
+        description: Nombre comercial completo de la plataforma.
+      - name: manufacturer
+        description: Fabricante del hardware (Sony, Microsoft, Nintendo, PC, etc.).
+      - name: platform_type
+        description: '{{ doc("platform_type") }}'
 
   - name: dim_publishers
+    description: Dimensiónde compañías editoras responsables de la distribución comercial.
     columns:
       - name: publisher_id
+        description: Clave del publisher.
         data_tests: [unique, not_null]
+      - name: publisher_name
+        description: Nombre estandarizado de la compañía editora.
 
   - name: dim_regiones
+    description: Dimensión de regiones geográficas donde se registran las ventas.
     columns:
       - name: region_id
+        description: Clave de la región.
         data_tests: [unique, not_null]
+      - name: region_code
+        description: '{{ doc("region_code") }}'
+      - name: region_name
+        description: Nombre completo de la región comercial.
 
   - name: fct_ventas
+    description: Tabla de hechos principal de ventas regionales de videojuegos.
     columns:
       - name: sale_id
+        description: '{{ doc("sale_id") }}'
         data_tests:
           - unique:
               config:
                 store_failures: true
           - not_null
+      - name: edicion_id
+        description: '{{ doc("edicion_id") }}'
       - name: game_id
+        description: Clave foránea hacia dim_videojuegos.
         data_tests:
           - not_null
           - relationships:
@@ -39,6 +72,7 @@ models:
               config:
                 store_failures: true
       - name: platform_id
+        description: Clave foránea hacia dim_plataformas.
         data_tests:
           - not_null
           - relationships:
@@ -48,6 +82,7 @@ models:
               config:
                 store_failures: true
       - name: publisher_id
+        description: Clave foránea hacia dim_publishers.
         data_tests:
           - not_null
           - relationships:
@@ -57,6 +92,7 @@ models:
               config:
                 store_failures: true
       - name: region_id
+        description: Clave foránea hacia dim_regiones.
         data_tests:
           - not_null
           - relationships:
@@ -65,3 +101,23 @@ models:
                 field: region_id
               config:
                 store_failures: true
+      - name: developer_name
+        description: Nombre del estudio desarrollador de la edición.
+      - name: rating_code
+        description: '{{ doc("rating_code") }}'
+      - name: rating_description
+        description: Descripción completa del rango de edad correspondiente al código ESRB.
+      - name: release_year
+        description: Año de lanzamiento comercial de la edición.
+      - name: source_code
+        description: '{{ doc("source_code") }}'
+      - name: sales_millions
+        description: '{{ doc("sales_millions") }}'
+      - name: critic_score
+        description: '{{ doc("critic_score") }}'
+      - name: critic_count
+        description: Número total de reseñas de crítica especializada contabilizadas.
+      - name: user_score
+        description: '{{ doc("user_score") }}'
+      - name: user_count
+        description: Número total de valoraciones de usuarios contabilizadas.
