@@ -13,9 +13,9 @@ models:
       - name: macrogenre_id
         data_tests:
           - not_null
-          - relationships:
+          - relationships: #Integridad referencial con macrogenero
               arguments:
-                to: ref('slv_videojuegos__macrogeneros')
+                to: ref('slv_videojuegos__macrogeneros') 
                 field: macrogenre_id
 
   - name: slv_videojuegos__publishers
@@ -32,6 +32,11 @@ models:
     columns:
       - name: rating_id
         data_tests: [unique, not_null]
+      - name: rating_code 
+        data_tests:
+          - accepted_values:
+               arguments:
+                 values: ['E', 'E10+', 'T', 'M', 'AO', 'RP', 'EC', 'K-A','Unrated'] #El rating debe ser uno de los oficiales dados por ESRB no por ejemplo '18+'
 
   - name: slv_videojuegos__plataformas
     columns:
@@ -42,6 +47,11 @@ models:
     columns:
       - name: region_id
         data_tests: [unique, not_null]
+      - name: region_code
+        data_tests: 
+          - accepted_values:
+              arguments:
+                values: ['NA', 'EU', 'JP', 'OTHER'] #Añado este test para confirmar que pertenece a una de las regiones existentes,por ejemplo SA (South America) no debe pasarlo
 
   - name: slv_videojuegos__videojuegos
     columns:
@@ -52,19 +62,19 @@ models:
           - not_null
           - relationships:
               arguments:
-                to: ref('slv_videojuegos__generos')
+                to: ref('slv_videojuegos__generos') #Integridad referencial con genero
                 field: genre_id
       - name: developer_id
         data_tests:
           - not_null
           - relationships:
-              arguments:
-                to: ref('slv_videojuegos__developers')
+              arguments: #Integridad referencial con developer
+                to: ref('slv_videojuegos__developers') 
                 field: developer_id
       - name: rating_id
         data_tests:
           - not_null
-          - relationships:
+          - relationships: #Integridad referencial con rating
               arguments:
                 to: ref('slv_videojuegos__ratings')
                 field: rating_id
@@ -76,21 +86,21 @@ models:
       - name: game_id
         data_tests:
           - not_null
-          - relationships:
+          - relationships: #Integridad referencial con juego
               arguments:
                 to: ref('slv_videojuegos__videojuegos')
                 field: game_id
       - name: platform_id
         data_tests:
           - not_null
-          - relationships:
+          - relationships: #Integridad referencial con plataforma
               arguments:
                 to: ref('slv_videojuegos__plataformas')
                 field: platform_id
       - name: publisher_id
         data_tests:
           - not_null
-          - relationships:
+          - relationships: #Integridad referencial con publisher
               arguments:
                 to: ref('slv_videojuegos__publishers')
                 field: publisher_id
@@ -102,14 +112,14 @@ models:
       - name: edicion_id
         data_tests:
           - not_null
-          - relationships:
+          - relationships: #Integridad referencial con edicion
               arguments:
                 to: ref('slv_videojuegos__ediciones')
                 field: edicion_id
       - name: region_id
         data_tests:
           - not_null
-          - relationships:
+          - relationships: #Integridad referencial con region
               arguments:
                 to: ref('slv_videojuegos__regiones')
                 field: region_id
@@ -118,7 +128,7 @@ models:
           - not_null
           - accepted_values:
               arguments:
-                values: ['VGS_2016', 'PS4', 'XBOX']
+                values: ['VGS_2016', 'PS4', 'XBOX'] # Este test lo añado para confirmar que viene de una de las fuentes dadas.
 
   - name: slv_videojuegos__puntuaciones_critica
     columns:
@@ -126,7 +136,7 @@ models:
         data_tests:
           - unique
           - not_null
-          - relationships:
+          - relationships: #Integridad referencial con edicion
               arguments:
                 to: ref('slv_videojuegos__ediciones')
                 field: edicion_id
@@ -137,7 +147,7 @@ models:
         data_tests:
           - unique
           - not_null
-          - relationships:
+          - relationships: #Integridad referencial con edicion
               arguments:
                 to: ref('slv_videojuegos__ediciones')
                 field: edicion_id
