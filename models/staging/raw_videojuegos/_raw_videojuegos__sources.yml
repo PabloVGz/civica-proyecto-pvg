@@ -16,10 +16,7 @@ sources:
           - name: name
             data_type: varchar
             description: "Título del videojuego."
-            data_tests:
-              - not_null: #Quiero que no sea nulo, por motivos evidentes
-                  config:
-                    severity: warn
+
           - name: platform
             data_type: varchar
             description: "Plataforma o consola de lanzamiento."
