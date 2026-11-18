@@ -1,4 +1,10 @@
 --Comprueba que no exista ninguna edición en silver que se haya quedado sin registros de venta asociados.
+{{ config(
+    severity='error',
+    warn_if='>0',
+    error_if='>10'
+) }}
+
 with ediciones as (
 
     select * from {{ ref('slv_videojuegos__ediciones') }}

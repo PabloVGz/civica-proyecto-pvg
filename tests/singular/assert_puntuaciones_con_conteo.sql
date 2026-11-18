@@ -1,4 +1,9 @@
 --No puede ser que la puntuacion sea X si el numero de reseñas es 0
+{{ config(
+    severity='error',
+    warn_if='>0',
+    error_if='>10'
+) }}
 select
     edicion_id,
     critic_score,
