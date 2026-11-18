@@ -16,9 +16,12 @@ sources:
           - name: name
             data_type: varchar
             description: "Título del videojuego."
+
           - name: platform
             data_type: varchar
             description: "Plataforma o consola de lanzamiento."
+            data_tests:
+              - not_null #También quiero que sea nulo
           - name: year_of_release
             data_type: varchar
             description: "Año de lanzamiento en crudo."
@@ -61,11 +64,15 @@ sources:
           - name: rating
             data_type: varchar
             description: "Clasificación por edades (ESRB)."
+            data_tests:
+              - accepted_values:
+                  arguments:
+                    values: ['E', 'E10+', 'T', 'M', 'AO', 'RP', 'EC', 'K-A','Unrated'] #Este test también lo he puesto en Silver, quiero asegurarme que las clasificaciones son las que deben ser
           - name: _loaded_at
             data_type: timestamp_ltz
             description: "Marca temporal de carga en la capa Bronze."
             data_tests:
-              - not_null
+              - not_null #Importante para la incrementalidad
 
       - name: raw_ps4
         description: "Ventas globales de videojuegos de PlayStation 4 (corte 2020)."
@@ -74,7 +81,7 @@ sources:
             data_type: varchar
             description: "Título del videojuego."
             data_tests:
-              - not_null
+              - not_null #Igual que en VGS
           - name: year
             data_type: varchar
             description: "Año de lanzamiento en crudo."
@@ -103,7 +110,7 @@ sources:
             data_type: timestamp_ltz
             description: "Marca temporal de carga en la capa Bronze."
             data_tests:
-              - not_null
+              - not_null #Importante para la incrementalidad
 
       - name: raw_xbox
         description: "Ventas globales de videojuegos de Xbox One (corte 2020)."
@@ -112,12 +119,12 @@ sources:
             data_type: varchar
             description: "Posición en el ranking de ventas del fichero original."
             data_tests:
-              - not_null
+              - not_null #Simple verificación
           - name: game
             data_type: varchar
             description: "Título del videojuego."
             data_tests:
-              - not_null
+              - not_null #Igualque en los anteriores
           - name: year
             data_type: varchar
             description: "Año de lanzamiento en crudo."
@@ -146,4 +153,4 @@ sources:
             data_type: timestamp_ltz
             description: "Marca temporal de carga en la capa Bronze."
             data_tests:
-              - not_null
+              - not_null #Importante para la incrementalidad

@@ -18,6 +18,8 @@ select
     e.publisher_id,
     v.region_id,
     v.source_code,
+    e.developer_name,
+    e.rating_code,
     e.release_year,
     v.sales_millions,
     e.critic_score,

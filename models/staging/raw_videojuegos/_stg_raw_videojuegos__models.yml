@@ -1,0 +1,27 @@
+# Estos tests los pruebo ya en staging, no en bronze, ya que al limpiar se arregla y silos pusiera en bronze daría fallo
+version: 2
+
+models:
+  - name: stg_raw_videojuegos__vgs_2016
+    columns:
+      - name: game_name
+        data_tests:
+          - not_null: #Quiero que no sea nulo, por motivos evidentes
+                  config:
+                    severity: warn
+
+  - name: stg_raw_videojuegos__ps4
+    columns:
+      - name: game_name
+        data_tests:
+          - not_null: #Quiero que no sea nulo, por motivos evidentes
+                  config:
+                    severity: warn
+
+  - name: stg_raw_videojuegos__xbox
+    columns:
+      - name: game_name
+        data_tests:
+          - not_null: #Quiero que no sea nulo, por motivos evidentes
+                  config:
+                    severity: warn

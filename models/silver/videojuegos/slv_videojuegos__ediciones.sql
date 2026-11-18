@@ -1,10 +1,16 @@
 with unioned as (
---se unen y se les asigna las prioridades, VGS tiene 1, PS4 2 y Xbox One 3
+    -- Se unen y se asignan las prioridades: VGS tiene 1, PS4 2 y Xbox One 3
     select
         game_name,
         platform,
         publisher,
+        developer,
+        rating,
         release_year,
+        critic_score,
+        critic_count,
+        user_score,
+        user_count,
         1 as source_priority
     from {{ ref('stg_raw_videojuegos__vgs_2016') }}
 
@@ -14,7 +20,13 @@ with unioned as (
         game_name,
         platform,
         publisher,
+        cast(null as varchar) as developer,
+        cast(null as varchar) as rating,
         release_year,
+        cast(null as integer) as critic_score,
+        cast(null as integer) as critic_count,
+        cast(null as number(10, 2)) as user_score,
+        cast(null as integer) as user_count,
         2 as source_priority
     from {{ ref('stg_raw_videojuegos__ps4') }}
 
@@ -24,20 +36,37 @@ with unioned as (
         game_name,
         platform,
         publisher,
+        cast(null as varchar) as developer,
+        cast(null as varchar) as rating,
         release_year,
+        cast(null as integer) as critic_score,
+        cast(null as integer) as critic_count,
+        cast(null as number(10, 2)) as user_score,
+        cast(null as integer) as user_count,
         3 as source_priority
     from {{ ref('stg_raw_videojuegos__xbox') }}
 
 ),
 
 deduplicated as (
---Los juegos de Play4 o de Xbox One de antes de 2016 estarán repetidos así que se agrupa por título y plataforma y se queda con una fila, priorizando
---las filas que sí tienen año de lanzamiento y en caso de que sea igual, se prioriza vgs
+    -- Se agrupa por título y plataforma priorizando filas con año de lanzamiento y fuente VGS
     select
         game_name,
         platform,
         coalesce(publisher, 'Unknown') as publisher_name,
-        release_year
+        coalesce(
+            max(developer) over (partition by lower(game_name), lower(platform)),
+            'Unknown'
+        ) as developer_name,
+        coalesce(
+            max(rating) over (partition by lower(game_name), lower(platform)),
+            'Unrated'
+        ) as rating_code,
+        release_year,
+        max(critic_score) over (partition by lower(game_name), lower(platform)) as critic_score,
+        max(critic_count) over (partition by lower(game_name), lower(platform)) as critic_count,
+        max(user_score) over (partition by lower(game_name), lower(platform)) as user_score,
+        max(user_count) over (partition by lower(game_name), lower(platform)) as user_count
     from unioned
     qualify row_number() over (
         partition by lower(game_name), lower(platform)
@@ -53,5 +82,11 @@ select
     {{ dbt_utils.generate_surrogate_key(['lower(game_name)']) }} as game_id,
     {{ dbt_utils.generate_surrogate_key(['lower(platform)']) }} as platform_id,
     {{ dbt_utils.generate_surrogate_key(['lower(publisher_name)']) }} as publisher_id,
-    release_year
+    {{ dbt_utils.generate_surrogate_key(['lower(developer_name)']) }} as developer_id,
+    {{ dbt_utils.generate_surrogate_key(['lower(rating_code)']) }} as rating_id,
+    release_year,
+    critic_score,
+    critic_count,
+    user_score,
+    user_count
 from deduplicated
