@@ -4,15 +4,15 @@ with ediciones as (
 
 ),
 
-critica as (
+developers as (
 
-    select * from {{ ref('slv_videojuegos__puntuaciones_critica') }}
+    select * from {{ ref('slv_videojuegos__developers') }}
 
 ),
 
-usuarios as (
+ratings as (
 
-    select * from {{ ref('slv_videojuegos__puntuaciones_usuarios') }}
+    select * from {{ ref('slv_videojuegos__ratings') }}
 
 )
 
@@ -21,13 +21,18 @@ select
     e.game_id,
     e.platform_id,
     e.publisher_id,
+    e.developer_id,
+    d.developer_name,
+    e.rating_id,
+    r.rating_code,
+    r.rating_description,
     e.release_year,
-    c.critic_score,
-    c.critic_count,
-    u.user_score,
-    u.user_count
+    e.critic_score,
+    e.critic_count,
+    e.user_score,
+    e.user_count
 from ediciones e
-left join critica c
-    on e.edicion_id = c.edicion_id
-left join usuarios u
-    on e.edicion_id = u.edicion_id
+left join developers d
+    on e.developer_id = d.developer_id
+left join ratings r
+    on e.rating_id = r.rating_id
