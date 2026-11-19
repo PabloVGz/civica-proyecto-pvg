@@ -58,3 +58,19 @@ Puntuación media otorgada por la prensa especializada en Metacritic (escala ent
 {% docs user_score %}
 Puntuación media otorgada por los usuarios en Metacritic (escala decimal de **0.0 a 10.0**).
 {% enddocs %}
+
+{% docs decada_lanzamiento %}
+Década de estreno comercial de la edición derivada de `release_year` (`1990s`, `2000s`, `2010s`, o `Unknown`).
+{% enddocs %}
+
+{% docs es_multiplataforma %}
+Indicador booleano que señala si el videojuego se lanzó en más de una plataforma.
+{% enddocs %}
+
+{% docs total_plataformas %}
+Número total de plataformas distintas en las que está disponible el videojuego.
+{% enddocs %}
+
+{% docs cuota_regional_pct %}
+Porcentaje que representan las ventas de esta región sobre el total de ventas de la edición dentro de la misma fuente (source).
+{% enddocs %}

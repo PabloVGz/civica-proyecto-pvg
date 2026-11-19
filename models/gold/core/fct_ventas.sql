@@ -4,28 +4,40 @@ with ventas as (
 
 ),
 
-ediciones_enriched as (
+ediciones as (
 
-    select * from {{ ref('gold_ediciones__enriched') }}
+    select * from {{ ref('slv_videojuegos__ediciones') }}
+
+),
+
+videojuegos as (
+
+    select * from {{ ref('slv_videojuegos__videojuegos') }}
 
 )
 
 select
     v.sale_id,
     v.edicion_id,
-    e.game_id,
     e.platform_id,
+    vj.genre_id,
     e.publisher_id,
+    e.developer_id,
     v.region_id,
     v.source_code,
-    e.developer_name,
-    e.rating_code,
-    e.release_year,
     v.sales_millions,
-    e.critic_score,
-    e.critic_count,
-    e.user_score,
-    e.user_count
+    round(
+        coalesce(
+            v.sales_millions / nullif(
+                sum(v.sales_millions) over (partition by v.edicion_id, v.source_code),
+                0
+            ) * 100,
+            0
+        ),
+        2
+    ) as cuota_regional_pct
 from ventas v
-left join ediciones_enriched e
+inner join ediciones e
     on v.edicion_id = e.edicion_id
+inner join videojuegos vj
+    on e.game_id = vj.game_id

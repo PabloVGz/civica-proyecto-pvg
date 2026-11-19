@@ -1,21 +1,37 @@
 version: 2
 
 models:
-  - name: dim_videojuegos
-    description: Dimensión de videojuegos con su género y macrogénero.
+  - name: dim_ediciones
+    description: Dimensión de ediciones de videojuegos con año, década, clasificación ESRB, disponibilidad multiplataforma y notas de Metacritic.
     columns:
-      - name: game_id
-        description: Clave del videojuego.
+      - name: edicion_id
+        description: '{{ doc("edicion_id") }}'
         data_tests: [unique, not_null]
       - name: game_name
-        description: Título comercial del videojuego.
-      - name: genre_name
-        description: Género principal del videojuego.
-      - name: macrogenre_name
-        description: Agrupación del género en macrogenero.
+        description: Título comercial normalizado del videojuego.
+      - name: release_year
+        description: Año de lanzamiento comercial de la edición.
+      - name: decada_lanzamiento
+        description: '{{ doc("decada_lanzamiento") }}'
+      - name: rating_code
+        description: '{{ doc("rating_code") }}'
+      - name: rating_description
+        description: Descripción completa del rango de edad correspondiente al código ESRB.
+      - name: es_multiplataforma
+        description: '{{ doc("es_multiplataforma") }}'
+      - name: total_plataformas
+        description: '{{ doc("total_plataformas") }}'
+      - name: critic_score
+        description: '{{ doc("critic_score") }}'
+      - name: critic_count
+        description: Número total de reseñas de crítica especializada contabilizadas.
+      - name: user_score
+        description: '{{ doc("user_score") }}'
+      - name: user_count
+        description: Número total de valoraciones de usuarios contabilizadas.
 
   - name: dim_plataformas
-    description: Dimensión de consolas y sistemas de juego con fabricante y tipo de hardware.
+    description: Dimensión analítica de consolas y sistemas de juego con fabricante y tipo de hardware.
     columns:
       - name: platform_id
         description: Clave de la plataforma.
@@ -29,14 +45,34 @@ models:
       - name: platform_type
         description: '{{ doc("platform_type") }}'
 
+  - name: dim_generos
+    description: Dimensión analítica de géneros de videojuegos con su agrupación de macrogénero.
+    columns:
+      - name: genre_id
+        description: Clave del género.
+        data_tests: [unique, not_null]
+      - name: genre_name
+        description: Nombre limpio del género del videojuego.
+      - name: macrogenre_name
+        description: Agrupación de alto nivel del género.
+
   - name: dim_publishers
-    description: Dimensiónde compañías editoras responsables de la distribución comercial.
+    description: Dimensión compañías editoras responsables de la distribución comercial.
     columns:
       - name: publisher_id
         description: Clave del publisher.
         data_tests: [unique, not_null]
       - name: publisher_name
         description: Nombre estandarizado de la compañía editora.
+
+  - name: dim_developers
+    description: Dimensión de estudios desarrolladores de videojuegos.
+    columns:
+      - name: developer_id
+        description: Clave del estudio desarrollador.
+        data_tests: [unique, not_null]
+      - name: developer_name
+        description: Nombre del estudio creador del juego.
 
   - name: dim_regiones
     description: Dimensión de regiones geográficas donde se registran las ventas.
@@ -61,14 +97,12 @@ models:
           - not_null
       - name: edicion_id
         description: '{{ doc("edicion_id") }}'
-      - name: game_id
-        description: Clave foránea hacia dim_videojuegos.
         data_tests:
           - not_null
           - relationships:
               arguments:
-                to: ref('dim_videojuegos')
-                field: game_id
+                to: ref('dim_ediciones')
+                field: edicion_id
               config:
                 store_failures: true
       - name: platform_id
@@ -81,6 +115,16 @@ models:
                 field: platform_id
               config:
                 store_failures: true
+      - name: genre_id
+        description: Clave foránea hacia dim_generos.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_generos')
+                field: genre_id
+              config:
+                store_failures: true
       - name: publisher_id
         description: Clave foránea hacia dim_publishers.
         data_tests:
@@ -89,6 +133,16 @@ models:
               arguments:
                 to: ref('dim_publishers')
                 field: publisher_id
+              config:
+                store_failures: true
+      - name: developer_id
+        description: Clave foránea hacia dim_developers.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_developers')
+                field: developer_id
               config:
                 store_failures: true
       - name: region_id
@@ -101,23 +155,9 @@ models:
                 field: region_id
               config:
                 store_failures: true
-      - name: developer_name
-        description: Nombre del estudio desarrollador de la edición.
-      - name: rating_code
-        description: '{{ doc("rating_code") }}'
-      - name: rating_description
-        description: Descripción completa del rango de edad correspondiente al código ESRB.
-      - name: release_year
-        description: Año de lanzamiento comercial de la edición.
       - name: source_code
         description: '{{ doc("source_code") }}'
       - name: sales_millions
         description: '{{ doc("sales_millions") }}'
-      - name: critic_score
-        description: '{{ doc("critic_score") }}'
-      - name: critic_count
-        description: Número total de reseñas de crítica especializada contabilizadas.
-      - name: user_score
-        description: '{{ doc("user_score") }}'
-      - name: user_count
-        description: Número total de valoraciones de usuarios contabilizadas.
+      - name: cuota_regional_pct
+        description: '{{ doc("cuota_regional_pct") }}'
